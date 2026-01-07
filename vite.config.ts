@@ -15,4 +15,12 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // GitHub Pages compatible build - outputs to dist folder
+  // For custom base path (e.g., /repo-name/), set base: '/repo-name/'
+  base: './',
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+  },
 }));
