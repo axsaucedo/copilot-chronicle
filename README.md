@@ -1,73 +1,93 @@
-# Welcome to your Lovable project
+# Copilot CLI Timeline Viewer
 
-## Project info
+An interactive timeline viewer for GitHub Copilot CLI session logs. Drop a `.jsonl` file to explore AI agent tool calls, messages, and session events with filtering and search.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Inspired by [Simon Willison's Claude Code Timeline Viewer](https://tools.simonwillison.net/claude-code-timeline).
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- 📁 **File Input**: Drop a `.jsonl` file, paste content, or fetch from URL
+- 🔍 **Filtering**: Search events, filter by type, hide verbose entries
+- 🕐 **Timezone Support**: Toggle between local and UTC timestamps
+- 📋 **Copy Tools**: Copy JSON or raw line to clipboard
+- 🔗 **URL Sharing**: Share sessions via URL (for smaller files)
+- 📱 **Responsive**: Works on desktop and mobile
 
-**Use Lovable**
+## Usage
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+1. Find your Copilot CLI session logs (typically in your home directory)
+2. Drop a `.jsonl` file onto the viewer
+3. Click events to view details
+4. Use filters to find specific events
 
-Changes made via Lovable will be committed automatically to this repo.
+## GitHub Pages Deployment
 
-**Use your preferred IDE**
+This project is configured for easy GitHub Pages deployment.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Option 1: GitHub Actions (Recommended)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+The workflow file is already included at `.github/workflows/deploy.yml`. Just push to the `main` branch and GitHub Actions will build and deploy automatically.
 
-Follow these steps:
+To enable:
+1. Go to your repo Settings → Pages
+2. Under "Build and deployment", select "GitHub Actions"
+3. Push to main branch
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Option 2: Manual Build
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Build for production
+npm run build
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# The 'dist' folder can now be deployed to any static host
 ```
 
-**Edit a file directly in GitHub**
+### Custom Base Path
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+If deploying to a subdirectory (e.g., `https://username.github.io/repo-name/`), update `vite.config.ts`:
 
-**Use GitHub Codespaces**
+```ts
+base: '/repo-name/',
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Development
 
-## What technologies are used for this project?
+```bash
+# Install dependencies
+npm install
 
-This project is built with:
+# Start dev server
+npm run dev
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+# Build for production
+npm run build
 
-## How can I deploy this project?
+# Preview production build
+npm run preview
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Copilot CLI JSONL Format
 
-## Can I connect a custom domain to my Lovable project?
+The viewer expects JSONL files with events like:
 
-Yes, you can!
+```json
+{"type":"session.start","data":{"sessionId":"...","copilotVersion":"0.0.367"},"id":"...","timestamp":"2024-01-01T00:00:00.000Z","parentId":null}
+{"type":"user.message","data":{"content":"Your prompt here"},"id":"...","timestamp":"...","parentId":"..."}
+{"type":"assistant.message","data":{"content":"...","toolRequests":[...]},"id":"...","timestamp":"...","parentId":"..."}
+{"type":"tool.execution_start","data":{"toolCallId":"...","toolName":"view","arguments":{...}},"id":"...","timestamp":"...","parentId":"..."}
+{"type":"tool.execution_complete","data":{"toolCallId":"...","success":true,"result":{"content":"..."}},"id":"...","timestamp":"...","parentId":"..."}
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Technology Stack
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- React + TypeScript
+- Vite (for fast builds and GitHub Pages compatibility)
+- Tailwind CSS + shadcn/ui
+- No backend required - runs entirely in the browser
+
+## License
+
+MIT
